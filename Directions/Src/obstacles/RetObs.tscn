@@ -1,0 +1,78 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Src/resources/DeathArea.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Src/obstacles/RetObs.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 0, 0 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 155, 6 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 155, 6 )
+
+[sub_resource type="SegmentShape2D" id=4]
+a = Vector2( 0, 64 )
+b = Vector2( 0, -64 )
+
+[sub_resource type="OccluderPolygon2D" id=5]
+polygon = PoolVector2Array( 0, -64, -20, -64, -20, -373, 0, -373 )
+
+[sub_resource type="OccluderPolygon2D" id=6]
+polygon = PoolVector2Array( 0, 64, -20, 64, -20, 373, 0, 373 )
+
+[node name="RetObs" type="KinematicBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -93.6566, -55.559 )
+shape = SubResource( 1 )
+
+[node name="DeathArea" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, -373 )
+rotation = 1.5708
+collision_layer = 0
+
+[node name="ColorRect" parent="DeathArea" index="0"]
+margin_right = 309.0
+
+[node name="CollisionShape2D" parent="DeathArea" index="1"]
+position = Vector2( 151, 10.006 )
+shape = SubResource( 2 )
+
+[node name="DeathArea2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 65 )
+rotation = 1.5708
+collision_layer = 0
+
+[node name="ColorRect" parent="DeathArea2" index="0"]
+margin_right = 309.0
+
+[node name="CollisionShape2D" parent="DeathArea2" index="1"]
+position = Vector2( 156, 10 )
+shape = SubResource( 3 )
+
+[node name="Complete" type="Area2D" parent="."]
+position = Vector2( -2, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Complete"]
+shape = SubResource( 4 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( -11.001, 0.13795 )
+scale = Vector2( 1.0166, 37.434 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 5 )
+
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
+occluder = SubResource( 6 )
+[connection signal="body_entered" from="Complete" to="." method="_on_Complete_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+
+[editable path="DeathArea"]
+
+[editable path="DeathArea2"]
